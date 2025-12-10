@@ -1,8 +1,44 @@
+import { ValidationPipe } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
+  // Create NestJS application instance
   const app = await NestFactory.create(AppModule);
-  await app.listen(3000);
+
+  // Get ConfigService to access environment variables
+  const configService = app.get(ConfigService);
+
+  // Global prefix for all routes
+  app.setGlobalPrefix('api');
+
+  // Enable CORS for cross-origin requests
+  app.enableCors({
+    origin: true, //! In production, specify exact origins like ['http://localhost:3000']
+    credentials: true, // Allow credentials like cookies to be shared
+  });
+
+  // Global validation pipe
+  // Automatically validate incoming requests based on DTOs
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true, // Strip properties that do not have any decorators
+      forbidNonWhitelisted: true, // Throw an error if non-whitelisted properties are present
+      transform: true, // Automatically transform payloads to DTO instances
+      transformOptions: {
+        enableImplicitConversion: true, // Automatically convert types (e.g., '123' to 123)
+      },
+    }),
+  );
+
+  // Get port from environment variables or default to 3000
+  const port = configService.get<number>('PORT') || 3000;
+
+  // Start the HTTP server
+  await app.listen(port);
+
+  console.log(`🚀 Application is running on: http://localhost:${port}/api`);
 }
+
 bootstrap();
