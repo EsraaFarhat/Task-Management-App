@@ -3,6 +3,13 @@ import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 
+/**
+ * Application Bootstrap
+ *
+ * This is the entry point that starts the NestJS application.
+ * It configures global pipes, CORS, and starts the HTTP server.
+ */
+
 async function bootstrap() {
   // Create NestJS application instance
   const app = await NestFactory.create(AppModule);
