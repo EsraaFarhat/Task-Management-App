@@ -1,10 +1,12 @@
 import { Exclude } from 'class-transformer';
+import { Task } from 'src/modules/tasks/entities/task.entity';
 import {
   BeforeInsert,
   BeforeUpdate,
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -118,6 +120,35 @@ export class User {
    */
   @UpdateDateColumn()
   updatedAt: Date;
+
+  /**
+   * ─────────────────────────────────────────────────────────────
+   * RELATIONSHIPS
+   * ─────────────────────────────────────────────────────────────
+   *
+   */
+
+  /**
+   * Tasks created by this user
+   *
+   * One user can create many tasks
+   * Relationship: User (1) ←→ (Many) Tasks
+   *
+   * Foreign key: task.creatorId references user.id
+   */
+  @OneToMany(() => Task, (task) => task.creator)
+  createdTasks: Task[];
+
+  /**
+   * Tasks assigned to this user
+   *
+   * One user can be assigned to many tasks
+   * Relationship: User (1) ←→ (Many) Tasks
+   *
+   * Foreign key: task.assigneeId references user.id
+   */
+  @OneToMany(() => Task, (task) => task.assignee)
+  assignedTasks: Task[];
 
   /**
    * ─────────────────────────────────────────────────────────────
