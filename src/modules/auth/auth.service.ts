@@ -3,6 +3,7 @@ import {
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from '../users/entities/user.entity';
@@ -23,6 +24,7 @@ import { RegisterDto } from './dto/register.dto';
 export class AuthService {
   constructor(
     @InjectRepository(User) private readonly userRepository: Repository<User>,
+    private readonly jwtService: JwtService,
   ) {}
 
   /**
@@ -61,11 +63,12 @@ export class AuthService {
     // 3. Save to database
     await this.userRepository.save(user);
 
-    // TODO: Generate JWT token
+    // 4. Generate JWT token
+    const accessToken = this.generateToken(user);
 
     // 5. Return token and user info
     return {
-      accessToken: 'TODO_GENERATE_TOKEN',
+      accessToken,
       user: {
         id: user.id,
         email: user.email,
@@ -110,10 +113,12 @@ export class AuthService {
       throw new UnauthorizedException('Account is deactivated');
     }
 
-    // TODO: Generate JWT token
+    // 4. Generate JWT token
+    const accessToken = this.generateToken(user);
+
     // 4. Return token and user info
     return {
-      accessToken: 'TODO_GENERATE_TOKEN',
+      accessToken,
       user: {
         id: user.id,
         email: user.email,
@@ -123,5 +128,29 @@ export class AuthService {
         avatarUrl: user.avatarUrl,
       },
     };
+  }
+
+  /**
+   * Generate JWT Token
+   *
+   * Creates a JWT token containing user information.
+   * Token is signed with JWT_SECRET and expires based on JWT_EXPIRATION.
+   *
+   * @param user - User to generate token for
+   * @returns JWT access token
+   *
+   * PRIVATE HELPER METHOD
+   */
+  private generateToken(user: User): string {
+    // Create JWT payload
+    const payload = {
+      sub: user.id,
+      email: user.email,
+      role: user.role,
+    };
+
+    // Generate and return signed token
+    // JwtService uses secret and expiration from JwtModule configuration
+    return this.jwtService.sign(payload);
   }
 }
