@@ -1,4 +1,5 @@
 import { Exclude } from 'class-transformer';
+import { Notification } from 'src/modules/notifications/entities/notification.entity';
 import { Task } from 'src/modules/tasks/entities/task.entity';
 import {
   BeforeInsert,
@@ -149,6 +150,15 @@ export class User {
    */
   @OneToMany(() => Task, (task) => task.assignee)
   assignedTasks: Task[];
+
+  /**
+   * Notifications received by this user
+   *
+   * One user can receive many notifications
+   * Relationship: User (1) ←→ (Many) Notifications
+   */
+  @OneToMany(() => Notification, (notification) => notification.user)
+  notifications: Notification[];
 
   /**
    * ─────────────────────────────────────────────────────────────

@@ -6,6 +6,7 @@
  *
  */
 
+export * from './notification-type.constant';
 export * from './roles.constant';
 export * from './socket-events.constant';
 export * from './task-priority.constant';

@@ -1,9 +1,11 @@
+import { Notification } from 'src/modules/notifications/entities/notification.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -168,6 +170,16 @@ export class Task {
   })
   @JoinColumn({ name: 'assigneeId' })
   assignee?: User;
+
+  /**
+   * Notifications related to this task
+   *
+   * One-to-Many relationship: One task → Many notifications
+   *
+   * We'll uncomment this when we create the Notification entity
+   */
+  @OneToMany(() => Notification, (notification) => notification.task)
+  notifications: Notification[];
 
   /**
    * ─────────────────────────────────────────────────────────────
