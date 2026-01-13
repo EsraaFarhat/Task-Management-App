@@ -1,6 +1,6 @@
-import { ValidationPipe } from '@nestjs/common';
+import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { NestFactory } from '@nestjs/core';
+import { NestFactory, Reflector } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { HttpExceptionFilter } from './common/filters';
 
@@ -39,6 +39,14 @@ async function bootstrap() {
       },
     }),
   );
+
+  /**
+   * Class Serializer Interceptor
+   *
+   * Excludes fields marked with @Exclude() from responses.
+   *
+   */
+  app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
 
   app.useGlobalFilters(new HttpExceptionFilter());
 

@@ -3,6 +3,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { JwtAuthGuard, RolesGuard } from './common/guards';
 import {
   LoggingInterceptor,
   TransformInterceptor,
@@ -45,6 +46,29 @@ import { AuthModule } from './modules/auth/auth.module';
     {
       provide: 'APP_INTERCEPTOR',
       useClass: TransformInterceptor,
+    },
+    /**
+     * JWT Authentication Guard
+     *
+     * Protects all routes by default.
+     * Routes marked with @Public() decorator are exempt.
+     *
+     */
+    {
+      provide: 'APP_GUARD',
+      useClass: JwtAuthGuard,
+    },
+    /**
+     * Roles Authorization Guard
+     *
+     * Checks if user has required role(s) to access route.
+     * Routes marked with @Roles() decorator are checked.
+     * Routes without @Roles() allow any authenticated user.
+     *
+     **/
+    {
+      provide: 'APP_GUARD',
+      useClass: RolesGuard,
     },
   ],
 })
