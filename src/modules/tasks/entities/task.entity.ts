@@ -1,3 +1,4 @@
+import { Comment } from 'src/modules/comments/entities/comment.entity';
 import { Notification } from 'src/modules/notifications/entities/notification.entity';
 import {
   Column,
@@ -170,6 +171,16 @@ export class Task {
   })
   @JoinColumn({ name: 'assigneeId' })
   assignee?: User;
+
+  /**
+   * Comments on this task
+   *
+   * One-to-Many relationship: One task → Many comments
+   *
+   * We'll uncomment this when we create the Comment entity
+   */
+  @OneToMany(() => Comment, (comment) => comment.task)
+  comments: Comment[];
 
   /**
    * Notifications related to this task

@@ -1,4 +1,5 @@
 import { Exclude } from 'class-transformer';
+import { Comment } from 'src/modules/comments/entities/comment.entity';
 import { Notification } from 'src/modules/notifications/entities/notification.entity';
 import { Task } from 'src/modules/tasks/entities/task.entity';
 import {
@@ -150,6 +151,15 @@ export class User {
    */
   @OneToMany(() => Task, (task) => task.assignee)
   assignedTasks: Task[];
+
+  /**
+   * Comments created by this user
+   *
+   * One user can create many comments
+   * Relationship: User (1) ←→ (Many) Comments
+   */
+  @OneToMany(() => Comment, (comment) => comment.user)
+  comments: Comment[];
 
   /**
    * Notifications received by this user
