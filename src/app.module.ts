@@ -3,7 +3,12 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import {
+  LoggingInterceptor,
+  TransformInterceptor,
+} from './common/interceptors';
 import { getDatabaseConfig } from './config/database.config';
+import { AuthModule } from './modules/auth/auth.module';
 
 /**
  * Root Application Module
@@ -28,8 +33,19 @@ import { getDatabaseConfig } from './config/database.config';
       useFactory: (configService: ConfigService) =>
         getDatabaseConfig(configService), // Use our config factory
     }),
+    AuthModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: 'APP_INTERCEPTOR',
+      useClass: LoggingInterceptor,
+    },
+    {
+      provide: 'APP_INTERCEPTOR',
+      useClass: TransformInterceptor,
+    },
+  ],
 })
 export class AppModule {}

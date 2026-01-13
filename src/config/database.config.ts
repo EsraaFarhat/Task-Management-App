@@ -25,7 +25,7 @@ export const getDatabaseConfig = (
     // Run migrations automatically on application start (optional)
     // Can be set to false for manual control
     migrationsRun: configService.get<string>('NODE_ENV') === 'production',
-    logging: configService.get<string>('NODE_ENV') === 'development', // Log queries in development only
+    logging: false, // Log queries in development only
     autoLoadEntities: true, // Automatically load entities registered in modules
   };
 };
