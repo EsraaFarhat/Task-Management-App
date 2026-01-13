@@ -1,5 +1,3 @@
-import { Comment } from 'src/modules/comments/entities/comment.entity';
-import { Notification } from 'src/modules/notifications/entities/notification.entity';
 import {
   Column,
   CreateDateColumn,
@@ -11,6 +9,8 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { TaskPriority, TaskStatus } from '../../../common/constants';
+import { Comment } from '../../../modules/comments/entities/comment.entity';
+import { Notification } from '../../../modules/notifications/entities/notification.entity';
 import { User } from '../../users/entities/user.entity';
 
 /**

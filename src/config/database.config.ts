@@ -21,7 +21,10 @@ export const getDatabaseConfig = (
     password: configService.get<string>('DB_PASSWORD'),
     database: configService.get<string>('DB_DATABASE'),
     entities: [__dirname + '/../**/*.entity{.ts,.js}'], // Auto-load all entities
-    synchronize: configService.get<string>('NODE_ENV') === 'development', // Auto-sync in development only
+    synchronize: false,
+    // Run migrations automatically on application start (optional)
+    // Can be set to false for manual control
+    migrationsRun: configService.get<string>('NODE_ENV') === 'production',
     logging: configService.get<string>('NODE_ENV') === 'development', // Log queries in development only
     autoLoadEntities: true, // Automatically load entities registered in modules
   };

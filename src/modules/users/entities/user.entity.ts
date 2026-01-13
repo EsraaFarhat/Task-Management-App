@@ -1,7 +1,4 @@
 import { Exclude } from 'class-transformer';
-import { Comment } from 'src/modules/comments/entities/comment.entity';
-import { Notification } from 'src/modules/notifications/entities/notification.entity';
-import { Task } from 'src/modules/tasks/entities/task.entity';
 import {
   BeforeInsert,
   BeforeUpdate,
@@ -13,6 +10,9 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { UserRole } from '../../../common/constants';
+import { Comment } from '../../../modules/comments/entities/comment.entity';
+import { Notification } from '../../../modules/notifications/entities/notification.entity';
+import { Task } from '../../../modules/tasks/entities/task.entity';
 
 /**
  * User Entity
