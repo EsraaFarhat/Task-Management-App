@@ -10,6 +10,7 @@ import {
 } from './common/interceptors';
 import { getDatabaseConfig } from './config/database.config';
 import { AuthModule } from './modules/auth/auth.module';
+import { UsersModule } from './modules/users/users.module';
 
 /**
  * Root Application Module
@@ -35,6 +36,7 @@ import { AuthModule } from './modules/auth/auth.module';
         getDatabaseConfig(configService), // Use our config factory
     }),
     AuthModule,
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [
